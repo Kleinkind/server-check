@@ -24,6 +24,12 @@ switch ($this->dbDriver) {
             'memo' => 'The <a rel="noopener" target="_blank" href="https://php.net/manual/en/ref.pdo-mysql.php">PDO MySQL</a> extension is required.'
         );
         if ($conn !== false) {
+            $result = $conn->query('SELECT VERSION() as mysql_version')->fetch();
+            if (isset($result[0])) {
+                $version = $result[0];
+            } else {
+                $version = $conn->getAttribute(PDO::ATTR_SERVER_VERSION);
+            }
             $requirements[] = array(
                 'name' => "MySQL {$this->requiredMySqlVersion}+",
                 'mandatory' => true,
